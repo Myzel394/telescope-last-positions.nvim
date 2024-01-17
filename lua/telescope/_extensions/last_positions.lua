@@ -14,6 +14,17 @@ local DEFAULT_MODE_ICON_MAP = {
     V = "",
     i = "",
     R = "󰊄",
+    n = "n",
+}
+local DEFAULT_MODE_NAME_MAP = {
+    v = "Visual",
+    V = "V·Line",
+    i = "Insert",
+    R = "Replace",
+    n = "Normal",
+}
+local DEFAULT_WHITELISTED_MODES = {
+    "v", "V", "i",
 }
 
 -- Makes sure aliased options are set correctly
@@ -35,6 +46,9 @@ return require"telescope".register_extension {
     exports = {
         last_positions = function(opts)
             opts = apply_cwd_only_aliases(opts)
+            local iconMap = opts.mode_icon_map or DEFAULT_MODE_ICON_MAP
+            local nameMap = opts.mode_name_map or DEFAULT_MODE_NAME_MAP
+            local whitelist = opts.whitelisted_modes or DEFAULT_WHITELISTED_MODES
             local results = {}
 
             for buffer_raw, last_positions_for_buffer in pairs(last_positions.last_positions) do
@@ -42,16 +56,19 @@ return require"telescope".register_extension {
 
                 local info = vim.fn.getbufinfo(buffer)[1]
                 for mode, pos in pairs(last_positions_for_buffer) do
-                    local line = pos[1]
+                    if vim.tbl_contains(whitelist, mode) then
+                        local line = pos[1]
 
-                    local element = {
-                        bufnr = buffer,
-                        info = info,
-                        indicator = DEFAULT_MODE_ICON_MAP[mode] or mode,
-                        lnum = line,
-                    }
+                        local element = {
+                            bufnr = buffer,
+                            info = info,
+                            indicator = iconMap[mode] or mode,
+                            lnum = line,
+                            mode = mode,
+                        }
 
-                    table.insert(results, element)
+                        table.insert(results, element)
+                    end
                 end
             end
 
@@ -97,7 +114,7 @@ return require"telescope".register_extension {
                     { entry.bufnr, "TelescopeResultsNumber" },
                     { entry.indicator, "TelescopeResultsComment" },
                     { icon, hl_group },
-                    display_bufname .. ":" .. entry.lnum,
+                    display_bufname .. ":" .. entry.lnum .. " - " .. (nameMap[entry.extra] or entry.extra),
                 }
             end
 
@@ -120,6 +137,7 @@ return require"telescope".register_extension {
                             filename = bufname,
                             lnum = entry.lnum,
                             indicator = entry.indicator,
+                            extra = entry.mode,
                         }, opts)
                     end
                 },
