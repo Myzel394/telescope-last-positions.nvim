@@ -1,4 +1,4 @@
-# telescope-last-positions
+# telescope-last-positions.nvim
 
 Remembers the last position where you left insert / visual / replace or any other mode!
 
