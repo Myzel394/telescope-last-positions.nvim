@@ -7,7 +7,7 @@ as this plugin implements the actual functionality.
 
 ## Showcase
 
-https://github.com/Myzel394/telescope-last-positions/showcase.mp4
+https://github.com/Myzel394/telescope-last-positions.nvim/assets/50424412/98704b7d-73dc-4a7d-bf6f-ef62a80b3182
 
 ## Requirements
 
