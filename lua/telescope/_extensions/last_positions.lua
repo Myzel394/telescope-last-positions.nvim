@@ -14,17 +14,15 @@ local DEFAULT_MODE_ICON_MAP = {
     V = "",
     i = "",
     R = "󰊄",
-    n = "n",
 }
 local DEFAULT_MODE_NAME_MAP = {
     v = "Visual",
     V = "V·Line",
     i = "Insert",
     R = "Replace",
-    n = "Normal",
 }
 local DEFAULT_WHITELISTED_MODES = {
-    "v", "V", "i",
+    "v", "V", "i", "R"
 }
 
 -- Makes sure aliased options are set correctly
